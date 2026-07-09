@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block title %}
+Manage Users
+{% endblock %}
+
+
+{% block content %}
+
+<div class="mb-4">
+
+    <h2>Manage Users</h2>
+
+    <p class="text-muted">
+        View and manage registered Trekkers.
+    </p>
+
+</div>
+
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        {% if users %}
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for user in users %}
+
+                    <tr>
+
+                        <td>
+                            {{ user.id }}
+                        </td>
+
+                        <td>
+                            {{ user.full_name }}
+                        </td>
+
+                        <td>
+                            {{ user.username }}
+                        </td>
+
+                        <td>
+                            {{ user.email }}
+                        </td>
+
+                        <td>
+                            {{ user.phone }}
+                        </td>
+
+                        <td>
+
+                            {% if user.status == "active" %}
+
+                                <span class="badge bg-success">
+                                    Active
+                                </span>
+
+                            {% elif user.status == "blacklisted" %}
+
+                                <span class="badge bg-danger">
+                                    Blacklisted
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            {% if user.status == "active" %}
+
+                            <form
+                                method="POST"
+                                action="{{ url_for('blacklist_user', user_id=user.id) }}"
+                                class="d-inline"
+                            >
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-sm btn-danger"
+                                >
+                                    Blacklist
+                                </button>
+
+                            </form>
+
+
+                            {% elif user.status == "blacklisted" %}
+
+                            <form
+                                method="POST"
+                                action="{{ url_for('activate_user', user_id=user.id) }}"
+                                class="d-inline"
+                            >
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-sm btn-success"
+                                >
+                                    Activate
+                                </button>
+
+                            </form>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        {% else %}
+
+        <p class="text-center text-muted">
+            No Trekker accounts found.
+        </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+<a
+    href="{{ url_for('admin_dashboard') }}"
+    class="btn btn-secondary mt-3"
+>
+    Back to Dashboard
+</a>
+
+{% endblock %}

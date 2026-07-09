@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}
+All Bookings
+{% endblock %}
+
+
+{% block content %}
+
+<div class="mb-4">
+
+    <h2>All Bookings</h2>
+
+    <p class="text-muted">
+        Complete current and historical booking records.
+    </p>
+
+</div>
+
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        {% if bookings %}
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>User</th>
+                        <th>User ID</th>
+                        <th>Trek</th>
+                        <th>Trek ID</th>
+                        <th>Booking Date</th>
+                        <th>Status</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for booking in bookings %}
+
+                    <tr>
+
+                        <td>
+                            {{ booking.id }}
+                        </td>
+
+                        <td>
+                            {{ booking.user.full_name }}
+                        </td>
+
+                        <td>
+                            {{ booking.user_id }}
+                        </td>
+
+                        <td>
+                            {{ booking.trek.name }}
+                        </td>
+
+                        <td>
+                            {{ booking.trek_id }}
+                        </td>
+
+                        <td>
+                            {{ booking.booking_date.strftime("%d-%m-%Y %H:%M") }}
+                        </td>
+
+                        <td>
+
+                            {% if booking.status == "Booked" %}
+
+                                <span class="badge bg-success">
+                                    Booked
+                                </span>
+
+                            {% elif booking.status == "Cancelled" %}
+
+                                <span class="badge bg-danger">
+                                    Cancelled
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-primary">
+                                    Completed
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        {% else %}
+
+        <p class="text-center text-muted">
+            No booking records found.
+        </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+<a
+    href="{{ url_for('admin_dashboard') }}"
+    class="btn btn-secondary mt-3"
+>
+    Back to Dashboard
+</a>
+
+{% endblock %}

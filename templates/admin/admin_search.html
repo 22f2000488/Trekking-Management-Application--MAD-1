@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+
+{% block title %}
+Admin Search
+{% endblock %}
+
+
+{% block content %}
+
+<h2>Search</h2>
+
+<p class="text-muted">
+    Search Treks, Staff, or Trekkers by name or ID.
+</p>
+
+
+<div class="card shadow-sm mb-4">
+
+    <div class="card-body">
+
+        <form method="GET">
+
+            <div class="row g-3">
+
+
+                <div class="col-md-3">
+
+                    <select
+                        name="type"
+                        class="form-select"
+                    >
+
+                        <option
+                            value="treks"
+                            {% if search_type == "treks" %}selected{% endif %}
+                        >
+                            Treks
+                        </option>
+
+                        <option
+                            value="staff"
+                            {% if search_type == "staff" %}selected{% endif %}
+                        >
+                            Staff
+                        </option>
+
+                        <option
+                            value="users"
+                            {% if search_type == "users" %}selected{% endif %}
+                        >
+                            Users
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="col-md-7">
+
+                    <input
+                        type="text"
+                        name="q"
+                        class="form-control"
+                        placeholder="Enter name or ID"
+                        value="{{ query_text }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="col-md-2">
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary w-100"
+                    >
+                        Search
+                    </button>
+
+                </div>
+
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+{% if query_text %}
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <h5 class="mb-3">
+            Search Results
+        </h5>
+
+
+        {% if results %}
+
+        <div class="table-responsive">
+
+            <table class="table table-hover">
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        {% if search_type == "treks" %}
+
+                            <th>Trek Name</th>
+                            <th>Location</th>
+                            <th>Difficulty</th>
+                            <th>Status</th>
+
+                        {% else %}
+
+                            <th>Name</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Status</th>
+
+                        {% endif %}
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for result in results %}
+
+                    <tr>
+
+                        <td>
+                            {{ result.id }}
+                        </td>
+
+
+                        {% if search_type == "treks" %}
+
+                            <td>
+                                {{ result.name }}
+                            </td>
+
+                            <td>
+                                {{ result.location }}
+                            </td>
+
+                            <td>
+                                {{ result.difficulty }}
+                            </td>
+
+                            <td>
+                                {{ result.status }}
+                            </td>
+
+
+                        {% else %}
+
+                            <td>
+                                {{ result.full_name }}
+                            </td>
+
+                            <td>
+                                {{ result.username }}
+                            </td>
+
+                            <td>
+                                {{ result.email }}
+                            </td>
+
+                            <td>
+                                {{ result.status }}
+                            </td>
+
+                        {% endif %}
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        {% else %}
+
+        <div class="alert alert-warning">
+            No matching results found.
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endif %}
+
+
+<a
+    href="{{ url_for('admin_dashboard') }}"
+    class="btn btn-secondary mt-3"
+>
+    Back to Dashboard
+</a>
+
+{% endblock %}

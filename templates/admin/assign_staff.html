@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Assign Staff
+{% endblock %}
+
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-md-6">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body p-4">
+
+                <h2>
+                    Assign Staff
+                </h2>
+
+                <p class="text-muted">
+                    Trek: {{ trek.name }}
+                </p>
+
+
+                <form method="POST">
+
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Select Staff Member
+                        </label>
+
+
+                        <select name="staff_id"
+                                class="form-select">
+
+
+                            <option value="">
+                                No Staff Assigned
+                            </option>
+
+
+                            {% for staff in active_staff %}
+
+                            <option value="{{ staff.id }}"
+
+                                {% if trek.assigned_staff_id == staff.id %}
+                                    selected
+                                {% endif %}>
+
+                                {{ staff.full_name }}
+                                ({{ staff.username }})
+
+                            </option>
+
+                            {% endfor %}
+
+
+                        </select>
+
+                    </div>
+
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        Save Assignment
+
+                    </button>
+
+
+                    <a href="{{ url_for('admin_treks') }}"
+                       class="btn btn-secondary">
+
+                        Cancel
+
+                    </a>
+
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
