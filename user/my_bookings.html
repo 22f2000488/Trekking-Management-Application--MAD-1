@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}
+My Bookings
+{% endblock %}
+
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+        <h2>My Bookings</h2>
+
+        <p class="text-muted">
+            View your current and previous bookings.
+        </p>
+    </div>
+
+    <a href="{{ url_for('user_dashboard') }}"
+       class="btn btn-secondary">
+        Dashboard
+    </a>
+
+</div>
+
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        {% if bookings %}
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>Trek</th>
+                        <th>Location</th>
+                        <th>Booking Date</th>
+                        <th>Start Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for booking in bookings %}
+
+                    <tr>
+
+                        <td>
+                            {{ booking.id }}
+                        </td>
+
+                        <td>
+                            {{ booking.trek.name }}
+                        </td>
+
+                        <td>
+                            {{ booking.trek.location }}
+                        </td>
+
+                        <td>
+                            {{ booking.booking_date.strftime("%d-%m-%Y") }}
+                        </td>
+
+                        <td>
+                            {{ booking.trek.start_date }}
+                        </td>
+
+                        <td>
+
+                            {% if booking.status == "Booked" %}
+
+                                <span class="badge bg-success">
+                                    Booked
+                                </span>
+
+                            {% elif booking.status == "Cancelled" %}
+
+                                <span class="badge bg-danger">
+                                    Cancelled
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-primary">
+                                    Completed
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            {% if booking.status == "Booked" %}
+
+                            <form
+                                method="POST"
+                                action="{{ url_for('cancel_booking', booking_id=booking.id) }}"
+                            >
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-sm btn-danger"
+                                >
+                                    Cancel
+                                </button>
+
+                            </form>
+
+                            {% else %}
+
+                                -
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        {% else %}
+
+        <p class="text-center text-muted">
+            You have not made any bookings.
+        </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}
