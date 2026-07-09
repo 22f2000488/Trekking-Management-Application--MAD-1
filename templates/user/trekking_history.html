@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}
+Trekking History
+{% endblock %}
+
+
+{% block content %}
+
+<h2>Trekking History</h2>
+
+<p class="text-muted mb-4">
+    Your completed trekking adventures.
+</p>
+
+
+{% if completed_bookings %}
+
+<div class="row g-4">
+
+    {% for booking in completed_bookings %}
+
+    <div class="col-md-6">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body">
+
+                <h4>
+                    {{ booking.trek.name }}
+                </h4>
+
+                <p>
+                    <strong>Location:</strong>
+                    {{ booking.trek.location }}
+                </p>
+
+                <p>
+                    <strong>Difficulty:</strong>
+                    {{ booking.trek.difficulty }}
+                </p>
+
+                <p>
+                    <strong>Duration:</strong>
+                    {{ booking.trek.duration_days }} days
+                </p>
+
+                <p>
+                    <strong>Trek Dates:</strong>
+                    {{ booking.trek.start_date }}
+                    to
+                    {{ booking.trek.end_date }}
+                </p>
+
+                <span class="badge bg-success">
+                    Completed
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+
+{% else %}
+
+<div class="alert alert-info">
+    You do not have any completed treks yet.
+</div>
+
+{% endif %}
+
+
+<a href="{{ url_for('user_dashboard') }}"
+   class="btn btn-secondary mt-4">
+    Back to Dashboard
+</a>
+
+{% endblock %}
